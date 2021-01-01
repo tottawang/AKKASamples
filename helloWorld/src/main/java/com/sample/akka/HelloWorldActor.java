@@ -2,7 +2,6 @@ package com.sample.akka;
 
 import akka.actor.AbstractActor;
 import akka.actor.Props;
-import akka.japi.pf.ReceiveBuilder;
 
 /**
  * https://riptutorial.com/akka/example/23198/akka-hello-world- more -java-8- just create a simple
@@ -10,11 +9,6 @@ import akka.japi.pf.ReceiveBuilder;
  *
  */
 public class HelloWorldActor extends AbstractActor {
-
-  public HelloWorldActor() {
-    receive(ReceiveBuilder.match(SayHello.class, this::sayHello).match(SayBye.class, this::sayBye)
-        .build());
-  }
 
   private void sayHello(final SayHello message) {
     System.out.println("Hello World");
@@ -26,5 +20,11 @@ public class HelloWorldActor extends AbstractActor {
 
   public static Props props() {
     return Props.create(HelloWorldActor.class);
+  }
+
+  @Override
+  public Receive createReceive() {
+    return receiveBuilder().match(SayHello.class, this::sayHello).match(SayBye.class, this::sayBye)
+        .build();
   }
 }
